@@ -118,10 +118,10 @@ const run = async () => {
     console.log('Start')
 
     // bootstrap
-    try{
+    try {
         await fs.access(stateFilePath)
     }
-    catch(e) {        
+    catch (e) {
         // default
         await saveState({
             lastPageUrl: config.forumThreadUrl,
@@ -133,7 +133,12 @@ const run = async () => {
     console.log(state)
 
     // start browser
-    const browser = await puppeteer.launch()
+    let browser = null
+    if (config.browserExecutablePath)
+        browser = await puppeteer.launch({ executablePath: config.browserExecutablePath, args: ['--no-sandbox'] })
+    else
+        browser = await puppeteer.launch()
+
     await login(browser, state)
     await crawl(browser, state)
     await browser.close()

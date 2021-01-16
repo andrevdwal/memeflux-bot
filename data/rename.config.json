@@ -3,5 +3,6 @@
     "forumUsername": "",
     "forumPassword": "",
     "forumLoginUrl": "",
-    "forumThreadUrl": ""
+    "forumThreadUrl": "",
+    "browserExecutablePath": "/usr/bin/chromium-browser"
 }
