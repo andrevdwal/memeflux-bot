@@ -65,7 +65,6 @@ const crawl = async (browser, state) => {
             let sources = []
             document.querySelectorAll('.bbWrapper > .bbImageWrapper > img')
                 .forEach(img => {
-                    console.log(' - image', img)
                     if (img.src)
                         sources.push(img.src)
                 })
@@ -79,13 +78,9 @@ const crawl = async (browser, state) => {
 
             if (!lastImageFound && state.lastImageUrl == img) {
                 lastImageFound = true
-                console.log('F', img)
-            }
-            else if (!lastImageFound) {
-                console.log('S', img)
             }
             else if (lastImageFound) {
-                console.log('T', img)
+                console.log('Processing', img)
                 state.lastImageUrl = img
 
                 const imgsource = await imgPage.goto(img)
@@ -99,7 +94,7 @@ const crawl = async (browser, state) => {
 
         // navigate next
         const nextBtn = await page.evaluate(() => document.querySelector('.pageNav-jump--next'))
-        console.log(nextBtn)
+        
         if (nextBtn) {
             await page.evaluate(() => document.querySelector('.pageNav-jump--next').click())
             await page.waitForNavigation()
@@ -109,6 +104,7 @@ const crawl = async (browser, state) => {
             await saveState(state)
         }
         else {
+            console.log('No next button found')
             break
         }
     }
